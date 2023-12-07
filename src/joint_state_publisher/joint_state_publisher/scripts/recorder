@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+import rospy
+import time
+
+from sensor_msgs.msg import JointState
+from std_msgs.msg import Float64
+from std_msgs.msg import Int32
+from std_msgs.msg import Time
+from joint_state_publisher.msg import RecorderMsg
+from rosgraph_msgs.msg import Log
+
+# import pandas as pd
+
+
+def joint_states_callback(data):
+    global joint_states
+    joint_states = data
+
+def action_states_callback(data):
+    global action_states
+    action_states = data
+
+def fault_flag_callback(data):
+    global fault_flag
+    fault_flag = data
+
+def planner_flag_callback(data):
+    global planner_flag
+    planner_flag = data
+
+def combine_data():
+    # Check if both joint states and action state data are available
+    if action_states.data > 0 and action_states.data < 11:
+        # Combine and process the data
+    
+        combined_msg = RecorderMsg()
+        combined_msg.joint_states = joint_states
+        combined_msg.action = action_states
+        combined_msg.fault_flag = fault_flag
+        combined_msg.planner_flag = planner_flag
+        pub = rospy.Publisher('/record', RecorderMsg, queue_size=100)
+        pub.publish(combined_msg)
+        rospy.logwarn_once("combined")
+
+
+if __name__ == '__main__':
+
+    # Initialize the ROS node
+    rospy.init_node('recorder')
+
+    # Create subscribers for the joint states and action state topics
+    rospy.Subscriber('/faulty_joint_states', JointState, joint_states_callback)
+    rospy.Subscriber('/action_states', Int32, action_states_callback)
+    rospy.Subscriber('/fault_flag', Int32, fault_flag_callback)
+    rospy.Subscriber('/planner_flag', Int32, planner_flag_callback)
+
+    # Use a timer to periodically check and combine the data
+    timer = rospy.Timer(rospy.Duration(0.02), lambda event: combine_data())
+
+    # Spin the node to receive and process messages
+    rospy.spin()
+

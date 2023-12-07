@@ -1,0 +1,13 @@
+# Service that can be used to control the robot joint positions/efforts using the
+# panda_control_server.
+# NOTE: This is done by publishing the joint commands to the right topics while sending
+# the gripper  width to the 'franka_gripper/move' action service.
+string[] joint_names
+float64[] joint_commands
+string control_type # The control type you want to use for the robot arm. Options are "effort" and "position".
+bool grasping # The gripper simply moves if this is `false`.
+bool arm_wait # Wait till the arm control has completed
+bool hand_wait # Wait till the hand control has completed
+---
+bool success
+string message

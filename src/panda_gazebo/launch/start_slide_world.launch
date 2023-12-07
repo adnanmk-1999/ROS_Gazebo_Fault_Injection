@@ -1,0 +1,19 @@
+<!--Launch file for starting the grasp gazebo environment-->
+<launch>
+  <!--Simulation arguments-->
+  <arg name="world" value="$(find panda_gazebo)/resources/worlds/slide.world"/>
+  <arg name="paused" default="true" doc="Start gazebo paused"/>
+  <arg name="verbose" default="false" doc="Enable Gazebo verbose mode"/>
+  <arg name="gazebo_gui" default="true" doc="Start the gazebo GUI"/>
+  <!--  The used phyics engine (options: dart and ode)-->
+  <arg name="physics" default="dart" doc="The physics engine used by gazebo"/>
+
+  <!--Start the Gazebo world-->
+  <include file="$(find panda_gazebo)/launch/start_world.launch.xml">
+    <arg name="world" value="$(arg world)"/>
+    <arg name="verbose" value="$(arg verbose)"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="gazebo_gui" value="$(arg gazebo_gui)"/>
+    <arg name="physics" value="$(arg physics)"/>
+  </include>
+</launch>
