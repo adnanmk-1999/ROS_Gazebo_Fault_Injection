@@ -12,7 +12,7 @@ Set up your system by following:
 
 Do till WS creation in the step 4 just before the rosbuild command 'catkin_make'.
 
-Copy dependency packages from this 'src' to your 'src' inside worksspace.
+Copy dependency packages from this 'src' to your 'src' inside worksspace. (Remember for project FrankaEmika_DS_WS - joint state publisher package is not necessary, also 'faulty_joint_states' on line 111 in /home/adnan/FrankaEmika_FI_ws/src/moveit/moveit/moveit_ros/planning/planning_scene_monitor/src/planning_scene_monitor.cpp must be changed to 'joint_states' as in Distribution Shift project, faults are not injected)
 
 Then run the command 'catkin_make -DCMAKE_BUILD_TYPE=Release -DFranka_DIR:PATH=/path/to/libfranka/build'.
 
